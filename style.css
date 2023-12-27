@@ -1,0 +1,48 @@
+body {
+    display: flex;
+    justify-content: center;
+    background-image: url(https://img.freepik.com/free-photo/green-textile-texture_23-2147729348.jpg?w=740&t=st=1703671802~exp=1703672402~hmac=11bd411f940c740926ae81c6fb02db040af392e1a296f1c30de0aacede9d30f8);
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+}
+
+
+button {
+    scale : 1;
+    margin: 5px;
+}
+
+.card {
+    width: 75px;
+    height: 90px;
+    background-color: white;
+    font-size: 1.5rem;
+    margin:5px;
+
+}
+
+
+.red {
+    color: firebrick;
+    
+}
+
+.black {
+    color: black;
+}
+
+
+.cardsBoard {
+    display: flex;
+    
+}
+
+.bustedText {
+    font-size: 2rem;
+}
+
+
+.displayNone {
+    display: none;
+}
