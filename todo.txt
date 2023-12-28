@@ -1,6 +1,7 @@
 [FUNC]
 make reset button
-Male Aces worth 11 or 1;
+
+
 
 [DEALER]
 give dealer cards
@@ -8,7 +9,9 @@ Let dealer take cards
 
 
 [FUNC]
+stand function
 win or lose condition
+Make Aces worth 11 or 1;
 track win or lose
 credit balance
 wager amount

@@ -316,13 +316,15 @@ const newDeck = [{
 let deck = [...newDeck]
 
 
-
+let yourCardsElement = document.getElementById("your-cards-text");
 let playerSumElement = document.getElementById("playerTotalCountEl")
 let cardsLeftEl = document.getElementById("cardsLeftEl");
 let hitButton = document.getElementById("hit-btn");
 let standButton = document.getElementById("stand-btn");
 let startButton = document.getElementById("start-btn");
 let newDeckButton;
+let wins = 0;
+let losses = 0;
 
 
 
@@ -363,7 +365,7 @@ function pick(dealerTurn) {
 }
 
 
-
+// renders a card out of the card object
 function renderCardPlayer(pickedCard){
         let newCard;
         let suit;
@@ -408,7 +410,7 @@ function reshuffle(){
         newDeckButton.remove();
 }
 
-
+// sums up players cards values
 function sumVal(myCards){
     let sumPlayer = 0;
        myCards.forEach(myCards => {
@@ -419,10 +421,7 @@ function sumVal(myCards){
       
        
        if (totalSum > 21) {
-        playerSumElement.classList.add("bustedText");
-        playerSumElement.textContent = "Busted! Your total was " + totalSum;
-        hitButton.hidden = true;
-        startButton.classList.remove("displayNone")
+        endGame(true);
         
         
     }
@@ -431,8 +430,7 @@ function sumVal(myCards){
 
 
 function startGame(){
-    let deck = [...newDeck];
-    
+    playerSumElement.classList.remove("bustedText");
     myCards.forEach(cardEntry => {
         console.log(cardEntry.id)
         document.getElementById(cardEntry.id).remove()
@@ -441,13 +439,34 @@ function startGame(){
     myCards = [];
     totalSum = 0
     
-    
-    //startButton.classList.add("displayNone");
-    pick(false);
-    pick(false);
-    
-
+    standButton.hidden = false;
     hitButton.hidden = false;
     deck = [...newDeck];
     
+    startButton.classList.add("displayNone");
+    pick(false);
+    pick(false); 
+    yourCardsElement.hidden = false  
+}
+
+
+function endGame(bust){
+   console.log(bust)
+    if (bust === true) {
+        playerSumElement.classList.add("bustedText");
+        playerSumElement.textContent = "Busted! Your total was " + totalSum;
+        
+        hitButton.hidden = true;
+        standButton.hidden = true;
+        startButton.classList.remove("displayNone")
+        losses++
+    } else { //stand
+        playerSumElement.classList.add("bustedText"); // same
+        playerSumElement.textContent = "Your total is " + totalSum;
+        
+        hitButton.hidden = true;
+        standButton.hidden = true;
+        startButton.classList.remove("displayNone")
+        wins++
+    }
 }
