@@ -315,7 +315,10 @@ const newDeck = [{
 // use [...newDeck] to Clone the value instead of referencing to it
 let deck = [...newDeck]
 
-
+let totalWinsElement = document.getElementById("wins-el")
+let totalLossesElement = document.getElementById("losses-el")
+let totalWinsCountSpan = document.getElementById("wins")
+let totalLossesCountSpan = document.getElementById("losses")
 let yourCardsElement = document.getElementById("your-cards-text");
 let playerSumElement = document.getElementById("playerTotalCountEl")
 let cardsLeftEl = document.getElementById("cardsLeftEl");
@@ -331,7 +334,8 @@ let losses = 0;
 let myCards = []
 let totalSum = 0;
 
-
+totalLossesCountSpan.textContent = losses;
+totalWinsCountSpan.textContent = wins;
 
 // picks a card object from the deck array, removes it  and stores it in pickedCard, pushes it so myCards and Calls renderCard()
 function pick(dealerTurn) {
@@ -430,6 +434,8 @@ function sumVal(myCards){
 
 
 function startGame(){
+    totalLossesElement.hidden = false;
+    totalWinsElement.hidden = false;
     playerSumElement.classList.remove("bustedText");
     myCards.forEach(cardEntry => {
         console.log(cardEntry.id)
@@ -460,6 +466,8 @@ function endGame(bust){
         standButton.hidden = true;
         startButton.classList.remove("displayNone")
         losses++
+        totalLossesCountSpan.textContent = losses
+        totalWinsCountSpan.textContent = wins
     } else { //stand
         playerSumElement.classList.add("bustedText"); // same
         playerSumElement.textContent = "Your total is " + totalSum;
@@ -468,5 +476,7 @@ function endGame(bust){
         standButton.hidden = true;
         startButton.classList.remove("displayNone")
         wins++
+        totalLossesCountSpan.textContent = losses
+        totalWinsCountSpan.textContent = wins
     }
 }
