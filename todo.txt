@@ -9,10 +9,19 @@ Let dealer take cards
 
 
 [FUNC]
-stand function
+stand function 
 win or lose condition
 Make Aces worth 11 or 1;
 track win or lose
 credit balance
 wager amount
 wager logic
+remove hit button score > 21
+
+
+
+end player turn✅ => dealerTurn => compare => result => newGame
+
+while (dealerTotal <17) {
+    pick(true)
+}

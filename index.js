@@ -315,12 +315,16 @@ const newDeck = [{
 // use [...newDeck] to Clone the value instead of referencing to it
 let deck = [...newDeck]
 
-let totalWinsElement = document.getElementById("wins-el")
-let totalLossesElement = document.getElementById("losses-el")
-let totalWinsCountSpan = document.getElementById("wins")
-let totalLossesCountSpan = document.getElementById("losses")
+let totalWinsElement = document.getElementById("wins-el");
+let totalLossesElement = document.getElementById("losses-el");
+let totalWinsCountSpan = document.getElementById("wins");
+let totalLossesCountSpan = document.getElementById("losses");
 let yourCardsElement = document.getElementById("your-cards-text");
-let playerSumElement = document.getElementById("playerTotalCountEl")
+let dealerCardsElement = document.getElementById("dealer-cards-text");
+let playerSumElement = document.getElementById("playerTotalCountEl");
+let dealerSumElement = document.getElementById("dealerTotalCountEl");
+let dealerCardsBoard = document.getElementById("dealerCardsBoard");
+let resultEl = document.getElementById("resultText");
 let cardsLeftEl = document.getElementById("cardsLeftEl");
 let hitButton = document.getElementById("hit-btn");
 let standButton = document.getElementById("stand-btn");
@@ -330,46 +334,131 @@ let wins = 0;
 let losses = 0;
 
 
-
+let dealerCards = []
 let myCards = []
 let totalSum = 0;
+let totalSumDealer = 0;
 
 totalLossesCountSpan.textContent = losses;
 totalWinsCountSpan.textContent = wins;
 
 // picks a card object from the deck array, removes it  and stores it in pickedCard, pushes it so myCards and Calls renderCard()
 function pick(dealerTurn) {
-    if (totalSum > 21){
+    if (totalSum > 21 && dealerTurn != true){
         
         return
     }  
+  
+    //Dealer turn
+    if (dealerTurn === true) {
 
-    if (deck.length > 0) {
-        let indexNumber = Math.floor(Math.random() * deck.length );
-        // cardEl.textContent = "You have picked " + deck[indexNumber].card + " of " + deck[indexNumber].suit;
-        pickedCard = deck[indexNumber]
-        deck.splice(indexNumber, 1);
-        cardsLeftEl.textContent = ("decksize is now " + deck.length);
-        console.log(pickedCard)
-        myCards.push(pickedCard)
-        renderCardPlayer(pickedCard)
-    } else {
-        cardEl.textContent = "You are out of cards!";
-        newDeckButton = document.createElement("button");
-        newDeckButton.setAttribute("id", "newDeckButton");
-        newDeckButton.setAttribute("onclick", "reshuffle()");
-        newDeckButton.textContent = "Reshuffle Deck";
-        container.appendChild(newDeckButton)    
+        if (deck.length > 0) {
+            let indexNumber = Math.floor(Math.random() * deck.length );
+            pickedCard = deck[indexNumber]
+            deck.splice(indexNumber, 1);
+            cardsLeftEl.textContent = ("decksize is now " + deck.length);
+            console.log("DealerCard: " + pickedCard)
+            dealerCards.push(pickedCard)
+            renderDealerCard(pickedCard) // dealer
+            
+             
+
+        
+        } else {
+            // cardEl.textContent = "You are out of cards!";
+            // newDeckButton = document.createElement("button");
+            // newDeckButton.setAttribute("id", "newDeckButton");
+            // newDeckButton.setAttribute("onclick", "reshuffle()");
+            // newDeckButton.textContent = "Reshuffle Deck";
+            // container.appendChild(newDeckButton)    
+            
+        }
+        
+    return pickedCard
+        
+    }  
+
+
+
+
+    //Player turn
+    if (dealerTurn != true) {
+
+        if (deck.length > 0) {
+            let indexNumber = Math.floor(Math.random() * deck.length );
+            pickedCard = deck[indexNumber]
+            deck.splice(indexNumber, 1);
+            cardsLeftEl.textContent = ("decksize is now " + deck.length);
+            console.log(pickedCard)
+            myCards.push(pickedCard)
+            renderCardPlayer(pickedCard)
+        } else {
+            cardEl.textContent = "You are out of cards!";
+            newDeckButton = document.createElement("button");
+            newDeckButton.setAttribute("id", "newDeckButton");
+            newDeckButton.setAttribute("onclick", "reshuffle()");
+            newDeckButton.textContent = "Reshuffle Deck";
+            container.appendChild(newDeckButton)    
+            
+        }
+        
+    return pickedCard
+        
+    }      
         
 }
-        return pickedCard
-        
-        
-        
+
+
+
+// render dealerCard
+function renderDealerCard(pickedCard){
+    let newCard;
+    let suit;
+    let color;
+    
+    switch (pickedCard.suit) {
+        case "hearts":
+            suit = "♥"
+            color = "red"
+            break;
+        case "spades":
+            suit = "♠"
+            color = "black"
+            break;
+        case "clubs":
+            suit = "♣"
+            color = "black"
+            break;
+        case "diamonds":
+            suit = "♦"
+            color = "red"
+            break;
+        default:
+            break;
+    }
+
+    newCard = document.createElement("div");
+    newCard.setAttribute("class","card");
+    newCard.classList.add(color);
+    newCard.setAttribute("id",pickedCard.id);
+    
+    newCard.textContent = (suit)
+    newCard.textContent += (pickedCard.card)
+    dealerCardsBoard.appendChild(newCard); //<----
+    sumValDealer(dealerCards)
+
 }
 
 
-// renders a card out of the card object
+
+
+
+
+
+
+
+
+// renders a player card out of the card object
 function renderCardPlayer(pickedCard){
         let newCard;
         let suit;
@@ -403,7 +492,7 @@ function renderCardPlayer(pickedCard){
         newCard.textContent = (suit)
         newCard.textContent += (pickedCard.card)
         myCardsBoard.appendChild(newCard);
-        sumVal(myCards)
+        sumValPlayer(myCards)
 
 }
 
@@ -415,7 +504,7 @@ function reshuffle(){
 }
 
 // sums up players cards values
-function sumVal(myCards){
+function sumValPlayer(myCards){
     let sumPlayer = 0;
        myCards.forEach(myCards => {
         sumPlayer += (myCards.value);
@@ -423,6 +512,11 @@ function sumVal(myCards){
        totalSum = sumPlayer;
        playerSumElement.textContent = "Your current count is: " + (totalSum) + "!";
       
+       
+       if (totalSum === 21){
+        endGame(true)
+       }
+       
        
        if (totalSum > 21) {
         endGame(true);
@@ -433,7 +527,21 @@ function sumVal(myCards){
 }
 
 
+// sums up dealer cards values
+function sumValDealer(dealerCards){
+    let sumDealer = 0;
+       dealerCards.forEach(dealerCards => {
+        sumDealer += (dealerCards.value);
+       });
+       totalSumDealer = sumDealer;
+       dealerSumElement.textContent = "Dealer sum: " + (totalSumDealer) + "!";
+
+      }
+
+
+
 function startGame(){
+    resultEl.hidden = true;
     totalLossesElement.hidden = false;
     totalWinsElement.hidden = false;
     playerSumElement.classList.remove("bustedText");
@@ -444,23 +552,100 @@ function startGame(){
     
     myCards = [];
     totalSum = 0
+
+    dealerCards.forEach(dealerCardEntry => {
+        console.log(dealerCardEntry.id)
+        document.getElementById(dealerCardEntry.id).remove()
+    });
+    
+    dealerCards = [];
+    totalSumDealer = 0;
     
     standButton.hidden = false;
     hitButton.hidden = false;
-    deck = [...newDeck];
+    deck = [...newDeck]; // dit moet nog anders maar voor testing laten
     
     startButton.classList.add("displayNone");
     pick(false);
-    pick(false); 
-    yourCardsElement.hidden = false  
+    pick(false);
+    pick(true); 
+    yourCardsElement.hidden = false;
+    dealerCardsElement.hidden = false;
+      
 }
+
+
+// scores are matched at the end of the turn
+function endPlayerTurn(stand,totalSum){
+        console.log ( totalSum + "blabla") 
+        console.log ("player stand = " + stand)
+        console.log (totalSumDealer)
+        
+        while (totalSumDealer < 17) {
+            pick(true);
+        }
+
+        resultEl.hidden = false;
+        resultEl.textContent = "HOI";
+        
+        if (totalSum >21 ) { 
+            console.log("Busted!, You lost")
+            resultEl.textContent = "Busted!, You lost"
+            losses++
+            return
+        } 
+
+        //Blackjacks
+        if (totalSum === 21) {
+            if (totalSumDealer === 21){
+                console.log("Draw!");
+                resultEl.textContent = "Draw!";
+                return
+            } 
+            else {
+                console.log("Black Jack! 2x wager")
+                resultEl.textContent = "Black Jack! 2x wager";
+                wins++;
+                wins++;
+                return
+            }   
+        }
+        
+        if (totalSumDealer === 21) {
+            console.log("You lose, Dealer has Black Jack")
+            resultEl.textContent = "You lose, Dealer has Black Jack";
+            losses++
+            return
+        }
+
+        //Dealer bust, player alive
+        if (totalSumDealer > 21 && totalSum <22) {
+            console.log("You win! Dealer bust")
+            resultEl.textContent = "You win! Dealer bust";
+            wins++
+            return
+        }
+
+        if (totalSumDealer === totalSum) {
+            console.log("Draw")
+            resultEl.textContent = "Draw"
+            return
+        }
+
+
+    }
+
+
+
 
 
 function endGame(bust){
    console.log(bust)
     if (bust === true) {
+        resultEl.hidden = false;
+        resultEl.textContent = "Busted! Your total was " + totalSum;
         playerSumElement.classList.add("bustedText");
-        playerSumElement.textContent = "Busted! Your total was " + totalSum;
+        playerSumElement.textContent = null
         
         hitButton.hidden = true;
         standButton.hidden = true;
@@ -478,5 +663,7 @@ function endGame(bust){
         wins++
         totalLossesCountSpan.textContent = losses
         totalWinsCountSpan.textContent = wins
+        endPlayerTurn(true, totalSum)
     }
 }
+
