@@ -342,6 +342,14 @@ let totalSumDealer = 0;
 totalLossesCountSpan.textContent = losses;
 totalWinsCountSpan.textContent = wins;
 
+function updateScore(){
+    totalLossesCountSpan.textContent = losses;
+    totalWinsCountSpan.textContent = wins;
+
+}
+
+
+
 // picks a card object from the deck array, removes it  and stores it in pickedCard, pushes it so myCards and Calls renderCard()
 function pick(dealerTurn) {
     if (totalSum > 21 && dealerTurn != true){
@@ -514,7 +522,7 @@ function sumValPlayer(myCards){
       
        
        if (totalSum === 21){
-        endGame(true)
+        endGame(false)
        }
        
        
@@ -542,6 +550,7 @@ function sumValDealer(dealerCards){
 
 function startGame(){
     resultEl.hidden = true;
+    resultEl.innerText = " "
     totalLossesElement.hidden = false;
     totalWinsElement.hidden = false;
     playerSumElement.classList.remove("bustedText");
@@ -586,12 +595,14 @@ function endPlayerTurn(stand,totalSum){
         }
 
         resultEl.hidden = false;
-        resultEl.textContent = "HOI";
+        //resultEl.textContent = "HOI";
         
         if (totalSum >21 ) { 
             console.log("Busted!, You lost")
+            resultEl.hidden = false;
             resultEl.textContent = "Busted!, You lost"
             losses++
+            updateScore()
             return
         } 
 
@@ -599,36 +610,62 @@ function endPlayerTurn(stand,totalSum){
         if (totalSum === 21) {
             if (totalSumDealer === 21){
                 console.log("Draw!");
+                resultEl.hidden = false;
                 resultEl.textContent = "Draw!";
+                updateScore()
                 return
             } 
             else {
                 console.log("Black Jack! 2x wager")
+                resultEl.hidden = false;
                 resultEl.textContent = "Black Jack! 2x wager";
                 wins++;
                 wins++;
+                updateScore()
                 return
             }   
         }
         
-        if (totalSumDealer === 21) {
+        if (totalSumDealer === 21) { /// werkt!
             console.log("You lose, Dealer has Black Jack")
+            resultEl.hidden = false;
             resultEl.textContent = "You lose, Dealer has Black Jack";
             losses++
+            updateScore()
             return
         }
 
         //Dealer bust, player alive
-        if (totalSumDealer > 21 && totalSum <22) {
+        if (totalSumDealer > 21 && totalSum <22) { /// werkt!
             console.log("You win! Dealer bust")
+            resultEl.hidden = false;
             resultEl.textContent = "You win! Dealer bust";
             wins++
+            updateScore()
             return
         }
 
         if (totalSumDealer === totalSum) {
             console.log("Draw")
+            resultEl.hidden = false;
             resultEl.textContent = "Draw"
+            updateScore()
+            return
+        }
+
+        if (totalSumDealer > totalSum){
+            console.log("You lose, Dealer had: " + totalSumDealer + " While you had: " + totalSum)
+            resultEl.hidden = false;
+            resultEl.textContent = "You lose! " + totalSum + " VS " + totalSumDealer;
+            losses++
+            updateScore()
+            return
+        } else {
+            console.log("You Win! You had: " + totalSum + " vs. the dealers " + totalSumDealer )
+            resultEl.hidden = false;
+            resultEl.textContent = "You Win! " + totalSum + " VS " + totalSumDealer 
+            wins++
+            updateScore()
             return
         }
 
@@ -660,7 +697,6 @@ function endGame(bust){
         hitButton.hidden = true;
         standButton.hidden = true;
         startButton.classList.remove("displayNone")
-        wins++
         totalLossesCountSpan.textContent = losses
         totalWinsCountSpan.textContent = wins
         endPlayerTurn(true, totalSum)
