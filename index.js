@@ -317,8 +317,10 @@ let deck = [...newDeck]
 
 let totalWinsElement = document.getElementById("wins-el");
 let totalLossesElement = document.getElementById("losses-el");
+let totalBlackJacksElement = document.getElementById("blackjacks-el");
 let totalWinsCountSpan = document.getElementById("wins");
 let totalLossesCountSpan = document.getElementById("losses");
+let totalBlackJacksCountSpan = document.getElementById("blackjacks");
 let yourCardsElement = document.getElementById("your-cards-text");
 let dealerCardsElement = document.getElementById("dealer-cards-text");
 let playerSumElement = document.getElementById("playerTotalCountEl");
@@ -329,13 +331,15 @@ let cardsLeftEl = document.getElementById("cardsLeftEl");
 let hitButton = document.getElementById("hit-btn");
 let standButton = document.getElementById("stand-btn");
 let startButton = document.getElementById("start-btn");
+let bugloopCounter = 0;
 let newDeckButton;
 let wins = 0;
 let losses = 0;
+let blackjacks =  0;
 
 
-let dealerCards = []
-let myCards = []
+let dealerCards = [];
+let myCards = [];
 let totalSum = 0;
 let totalSumDealer = 0;
 
@@ -345,6 +349,7 @@ totalWinsCountSpan.textContent = wins;
 function updateScore(){
     totalLossesCountSpan.textContent = losses;
     totalWinsCountSpan.textContent = wins;
+    totalBlackJacksCountSpan.textContent = blackjacks;
 
 }
 
@@ -352,6 +357,8 @@ function updateScore(){
 
 // picks a card object from the deck array, removes it  and stores it in pickedCard, pushes it so myCards and Calls renderCard()
 function pick(dealerTurn) {
+
+    //disables function for player  when player is bust
     if (totalSum > 21 && dealerTurn != true){
         
         return
@@ -400,7 +407,7 @@ function pick(dealerTurn) {
             myCards.push(pickedCard)
             renderCardPlayer(pickedCard)
         } else {
-            cardEl.textContent = "You are out of cards!";
+            cardEl.textContent = "The deck is empty!";
             newDeckButton = document.createElement("button");
             newDeckButton.setAttribute("id", "newDeckButton");
             newDeckButton.setAttribute("onclick", "reshuffle()");
@@ -451,7 +458,7 @@ function renderDealerCard(pickedCard){
     
     newCard.textContent = (suit)
     newCard.textContent += (pickedCard.card)
-    dealerCardsBoard.appendChild(newCard); //<----
+    dealerCardsBoard.appendChild(newCard);
     sumValDealer(dealerCards)
 
 }
@@ -590,10 +597,12 @@ function sumValDealer(dealerCards){
 
 
 function startGame(){
+    bugloopCounter = 0;
     resultEl.hidden = true;
     resultEl.innerText = " "
     totalLossesElement.hidden = false;
     totalWinsElement.hidden = false;
+    totalBlackJacksElement.hidden = false;
     playerSumElement.classList.remove("bustedText");
     myCards.forEach(cardEntry => {
         console.log(cardEntry.id)
@@ -616,11 +625,12 @@ function startGame(){
     deck = [...newDeck]; // dit moet nog anders maar voor testing laten
     
     startButton.classList.add("displayNone");
+    pick(true);        // <------ first pick dealer card  to fix problem below (640)
     pick(false);
     pick(false);
-    pick(true); 
-    yourCardsElement.hidden = false;
     dealerCardsElement.hidden = false;
+    yourCardsElement.hidden = false;
+    
       
 }
 
@@ -629,14 +639,29 @@ function startGame(){
 function endPlayerTurn(stand,totalSum){
         console.log ( totalSum + "blabla") 
         console.log ("player stand = " + stand)
-        console.log (totalSumDealer)
+        console.log (totalSumDealer) ////////// <---- this SHOULD have the value of the first Card but was 0 when player had BJ HoleCards
         
-        while (totalSumDealer < 17) {
-            pick(true);
+        
+
+        if (totalSumDealer === 0 && bugloopCounter < 5) {         
+            sumValDealer(dealerCards)
+            endPlayerTurn(true,totalSum)
+            console.log("totalSumDealer(fixloop) = " + totalSumDealer)
+            bugloopCounter++
+            return
+        } else {
+            
+            while (totalSumDealer < 17) {
+                pick(true);
+            }
+
         }
 
+
+
+        //un-hides result element
         resultEl.hidden = false;
-        //resultEl.textContent = "HOI";
+        
         
         if (totalSum >21 ) { 
             console.log("Busted!, You lost")
@@ -653,6 +678,7 @@ function endPlayerTurn(stand,totalSum){
                 console.log("Draw!");
                 resultEl.hidden = false;
                 resultEl.textContent = "Draw!";
+                blackjacks++;
                 updateScore()
                 return
             } 
@@ -661,7 +687,7 @@ function endPlayerTurn(stand,totalSum){
                 resultEl.hidden = false;
                 resultEl.textContent = "Black Jack! 2x wager";
                 wins++;
-                wins++;
+                blackjacks++;
                 updateScore()
                 return
             }   
@@ -677,7 +703,7 @@ function endPlayerTurn(stand,totalSum){
         }
 
         //Dealer bust, player alive
-        if (totalSumDealer > 21 && totalSum <22) { /// werkt!
+        if (totalSumDealer > 21 && totalSum <22) { 
             console.log("You win! Dealer bust")
             resultEl.hidden = false;
             resultEl.textContent = "You win! Dealer bust";
@@ -716,7 +742,7 @@ function endPlayerTurn(stand,totalSum){
 
 
 
-
+// gets called by stand button or sumValPlayer (bust=true/ BJ= false)
 function endGame(bust){
    console.log(bust)
     if (bust === true) {
