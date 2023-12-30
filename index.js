@@ -631,6 +631,12 @@ function startGame(){
     dealerCardsElement.hidden = false;
     yourCardsElement.hidden = false;
     
+    /////// adds hidden card for first half of game
+    turnedCard = document.createElement("div");
+    turnedCard.setAttribute("class","cardback");
+    turnedCard.setAttribute("id","hiddenCard");
+    dealerCardsBoard.appendChild(turnedCard);
+
       
 }
 
@@ -641,7 +647,7 @@ function endPlayerTurn(stand,totalSum){
         console.log ("player stand = " + stand)
         console.log (totalSumDealer) ////////// <---- this SHOULD have the value of the first Card but was 0 when player had BJ HoleCards
         
-        
+        turnedCard.remove()
 
         if (totalSumDealer === 0 && bugloopCounter < 5) {         
             sumValDealer(dealerCards)

@@ -16,12 +16,18 @@ remove hit button score > 21 ✅
 
 
 Make Aces worth 11 or 1; ✅ 1 [TESTING NEEDED]
+
 dealerSum first card not working if Player has HoleCards BlackJack [screenshot] [focus]
 
 
 credit balance 2
 wager amount 3
 wager logic  3
+
+
+
+
+
 
 
 
