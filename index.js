@@ -365,7 +365,6 @@ function pick(dealerTurn) {
             pickedCard = deck[indexNumber]
             deck.splice(indexNumber, 1);
             cardsLeftEl.textContent = ("decksize is now " + deck.length);
-            console.log("DealerCard: " + pickedCard)
             dealerCards.push(pickedCard)
             renderDealerCard(pickedCard) // dealer
             
@@ -517,7 +516,24 @@ function sumValPlayer(myCards){
        myCards.forEach(myCards => {
         sumPlayer += (myCards.value);
        });
+       
        totalSum = sumPlayer;
+    
+       //////////////////// Code that checks IF Aces need to be 1
+
+       if (totalSum > 21) {
+            myCards.forEach(cardEntry => {
+                if (cardEntry.card === "A" && cardEntry.value === 11 && totalSum > 21) {
+                    cardEntry.value = 1;
+                    console.log("value of A changed to "+ cardEntry.value )
+                    console.log("Total sum was "+ totalSum + "and sumPlayer was" +sumPlayer) 
+                    return sumValPlayer(myCards)
+
+                } else console.log("No Ace found")
+            });
+        }
+        ///////////////////////////////////
+
        playerSumElement.textContent = "Your current count is: " + (totalSum) + "!";
       
        
@@ -542,6 +558,31 @@ function sumValDealer(dealerCards){
         sumDealer += (dealerCards.value);
        });
        totalSumDealer = sumDealer;
+
+
+       //////////////////// insert A's code here
+       
+       
+       if (totalSumDealer > 21) {
+        dealerCards.forEach(cardEntry => {
+            if (cardEntry.card === "A" && cardEntry.value === 11 && totalSumDealer > 21) {
+                cardEntry.value = 1;
+                console.log("value of A changed to "+ cardEntry.value )
+                console.log("Total sum was "+ totalSumDealer + "and sumDealer was" +sumDealer) 
+                return sumValDealer(dealerCards)
+
+            } else console.log("No Ace found for dealer")
+        });
+    }
+       
+ 
+       
+       ///////////////////////////////////////////
+       
+       if (dealerCards.length < 2) {
+        console.log("totalSumDealer = "+totalSumDealer + "sumDealer = "+sumDealer)
+       }
+       
        dealerSumElement.textContent = "Dealer sum: " + (totalSumDealer) + "!";
 
       }

@@ -10,15 +10,22 @@ Let dealer take cards✅
 
 [FUNC]
 stand function ✅
-win or lose condition
-Make Aces worth 11 or 1;
-track win or lose
-credit balance
-wager amount
-wager logic 
+win or lose condition ✅
+track win or lose ✅
 remove hit button score > 21 ✅
 
 
+Make Aces worth 11 or 1; ✅ 1 [TESTING NEEDED]
+dealerSum first card not working if Player has HoleCards BlackJack [screenshot]
 
-end player turn✅ => dealerTurn ✅=> compare => result => newGame ✅
+if bust => loop cards check for Ace => Value = 1
+
+
+credit balance 2
+wager amount 3
+wager logic  3
+
+
+
+end player turn✅ => dealerTurn ✅=> compare ✅=> result✅ => newGame ✅
 
