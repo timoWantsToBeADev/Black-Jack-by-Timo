@@ -595,8 +595,8 @@ function sumValDealer(dealerCards){
 function startGame(){
     if (removeHidden > 0) {turnedCard.remove()} // remove turned card after game
     bugloopCounter = 0;
-    resultEl.hidden = true;
-    resultEl.innerText = " "
+    resultEl.hidden = false;
+    resultEl.innerText = "Let's play"
     dealerCardsBoard.classList.remove("displayNone")
     playerCardsBoard.classList.remove("displayNone")
     totalLossesElement.hidden = false;
