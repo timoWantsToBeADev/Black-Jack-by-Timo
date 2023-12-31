@@ -75,13 +75,13 @@ button {
     padding: 15px 30px;
     background-color: var(--clr-poker);
     border-radius: 25px;
-    min-width: 400px;
+    min-width: 375px;
     justify-content: center;
     
 }
 
 .bustedText {
-    font-size: 2rem;
+    font-size: 1.7rem;
 }
 
 
@@ -90,6 +90,10 @@ button {
 }
 
 .resultText {
-    font-size: 2rem;
+    font-size: 1.7rem;
     
+}
+
+.title {
+    font-size: 1.2rem;
 }
