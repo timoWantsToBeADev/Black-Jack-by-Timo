@@ -327,6 +327,7 @@ let playerSumElement = document.getElementById("playerTotalCountEl");
 let dealerSumElement = document.getElementById("dealerTotalCountEl");
 let dealerCardsBoard = document.getElementById("dealerCardsBoard");
 let resultEl = document.getElementById("resultText");
+let removeHidden = 0;
 let cardsLeftEl = document.getElementById("cardsLeftEl");
 let hitButton = document.getElementById("hit-btn");
 let standButton = document.getElementById("stand-btn");
@@ -597,6 +598,7 @@ function sumValDealer(dealerCards){
 
 
 function startGame(){
+    if (removeHidden > 0) {turnedCard.remove()} // remove turned card after game
     bugloopCounter = 0;
     resultEl.hidden = true;
     resultEl.innerText = " "
@@ -761,8 +763,9 @@ function endGame(bust){
         standButton.hidden = true;
         startButton.classList.remove("displayNone")
         losses++
-        totalLossesCountSpan.textContent = losses
-        totalWinsCountSpan.textContent = wins
+        totalLossesCountSpan.textContent = losses;
+        totalWinsCountSpan.textContent = wins;
+        removeHidden = 1;
     } else { //stand
         playerSumElement.classList.add("bustedText"); // same
         playerSumElement.textContent = "Your total is " + totalSum;
