@@ -326,6 +326,7 @@ let dealerCardsElement = document.getElementById("dealer-cards-text");
 let playerSumElement = document.getElementById("playerTotalCountEl");
 let dealerSumElement = document.getElementById("dealerTotalCountEl");
 let dealerCardsBoard = document.getElementById("dealerCardsBoard");
+let playerCardsBoard = document.getElementById("myCardsBoard")
 let resultEl = document.getElementById("resultText");
 let removeHidden = 0;
 let cardsLeftEl = document.getElementById("cardsLeftEl");
@@ -596,6 +597,8 @@ function startGame(){
     bugloopCounter = 0;
     resultEl.hidden = true;
     resultEl.innerText = " "
+    dealerCardsBoard.classList.remove("displayNone")
+    playerCardsBoard.classList.remove("displayNone")
     totalLossesElement.hidden = false;
     totalWinsElement.hidden = false;
     totalBlackJacksElement.hidden = false;
