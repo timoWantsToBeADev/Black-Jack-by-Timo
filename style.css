@@ -1,3 +1,14 @@
+:root {
+    --clr-black : black;
+    --clr-red : firebrick;
+    --clr-poker : #35654d;
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
 
 body {
     display: flex;
@@ -8,10 +19,22 @@ body {
     color: white;
 }
 
+#container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
 button {
     
     margin: 5px;
+}
+
+#buttonBar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card {
@@ -35,17 +58,20 @@ button {
 
 
 .red {
-    color: firebrick;
+    color: var(--clr-red);
     
 }
 
 .black {
-    color: black;
+    color: var(--clr-black);
 }
 
 
 .cardsBoard {
     display: flex;
+    padding: 15px 30px;
+    background-color: var(--clr-poker);
+    border-radius: 25px;
     
 }
 

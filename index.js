@@ -425,7 +425,7 @@ function pick(dealerTurn) {
 
 
 
-// render dealerCard
+// renders a dealer card out of the pickedCard
 function renderDealerCard(pickedCard){
     let newCard;
     let suit;
@@ -456,9 +456,9 @@ function renderDealerCard(pickedCard){
     newCard.setAttribute("class","card");
     newCard.classList.add(color);
     newCard.setAttribute("id",pickedCard.id);
-    
-    newCard.textContent = (suit)
-    newCard.textContent += (pickedCard.card)
+
+    newCard.textContent = (pickedCard.card)
+    newCard.textContent += (suit)
     dealerCardsBoard.appendChild(newCard);
     sumValDealer(dealerCards)
 
@@ -466,14 +466,7 @@ function renderDealerCard(pickedCard){
 
 
 
-
-
-
-
-
-
-
-// renders a player card out of the card object
+// renders a player card out of the pickedCard
 function renderCardPlayer(pickedCard){
         let newCard;
         let suit;
@@ -504,8 +497,9 @@ function renderCardPlayer(pickedCard){
         newCard.classList.add(color);
         newCard.setAttribute("id",pickedCard.id);
         
-        newCard.textContent = (suit)
-        newCard.textContent += (pickedCard.card)
+        
+        newCard.textContent = (pickedCard.card)
+        newCard.textContent += (suit)
         myCardsBoard.appendChild(newCard);
         sumValPlayer(myCards)
 
@@ -591,12 +585,12 @@ function sumValDealer(dealerCards){
         console.log("totalSumDealer = "+totalSumDealer + "sumDealer = "+sumDealer)
        }
        
-       dealerSumElement.textContent = "Dealer sum: " + (totalSumDealer) + "!";
+       dealerSumElement.textContent = "Current dealer count is: " + (totalSumDealer) + "!";
 
       }
 
 
-
+//starts game
 function startGame(){
     if (removeHidden > 0) {turnedCard.remove()} // remove turned card after game
     bugloopCounter = 0;
